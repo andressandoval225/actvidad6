@@ -1,16 +1,20 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
+require("dotenv").config();
+
 const pool = new Pool({
-    host: 'localhost',
-    port: 5432,
-    user: 'postgres',
-    password: '123456',
-    database: 'biblioteca'
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
-pool.query('SELECT NOW()', (error, resultado)=>{
-    if(error){
-console.log(error);
-}else{
-    console.log(resultado.rows);
-}
+
+pool.query("SELECT NOW()", (error, resultado) => {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log(resultado.rows);
+    }
 });
-module.exports=pool;
+
+module.exports = pool;

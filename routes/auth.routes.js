@@ -1,15 +1,32 @@
 const express = require("express");
-const authorize = require("../middlewares/authorize");
-const authController=require("../controllers/auth.controller");
 const router = express.Router();
-// Ruta pública
+
+const authController = require("../controllers/auth.controller");
+const authenticate = require("../middlewares/authenticate");
+const authorize = require("../middlewares/authorize");
+
+// Rutas públicas
+router.post("/register", authController.register);
 router.post("/login", authController.login);
-// Ruta protegida (solo usuarios autenticados)
-router.get("/dashboard", authorize(), (req, res) => {
-  res.json({ message: "Bienvenido al panel", userId: req.user.id });
+
+// Ruta protegida
+router.get("/dashboard", authenticate, (req, res) => {
+    res.json({
+        message: "Bienvenido al panel",
+        user: req.user
+    });
 });
-// Ruta protegida y restringida (solo administradores)
-router.post("/admin/users", authorize(["admin"]), (req, res) => {
-  res.json({ message: "Usuario creado exitosamente" });
-});
-module.exports=router;
+
+// Ruta solo para administradores
+router.post(
+    "/admin/users",
+    authenticate,
+    authorize("admin"),
+    (req, res) => {
+        res.json({
+            message: "Usuario creado exitosamente"
+        });
+    }
+);
+
+module.exports = router;

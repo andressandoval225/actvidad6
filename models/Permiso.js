@@ -1,17 +1,23 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Permiso = sequelize.define("Permiso", {
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
+const Permiso = sequelize.define(
+  "Permiso",
+  {
+    nombre: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
 
-  descripcion: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    descripcion: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
-});
+  {
+    tableName: "permisos",
+  }
+);
 
 module.exports = Permiso;
